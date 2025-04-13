@@ -1,0 +1,50 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+Before diving into the best practices, please note that you may need to adapt the globs depending on your project's specific file structure and requirements.
+
+---
+name: fastapi-best-practices.mdc
+description: Best practices for FastAPI application development
+globs: **/*.py
+---
+
+- Use type hints for all function parameters and return types
+- Implement proper error handling with custom exception handlers
+- Use dependency injection for database sessions and other dependencies
+- Utilize FastAPI's built-in support for asynchronous programming
+
+---
+name: pydantic-best-practices.mdc
+description: Guidelines for using Pydantic models effectively
+globs: **/*.py
+---
+
+- Use Pydantic's BaseModel for all data validation and serialization
+- Implement custom validators for complex field validation logic
+- Use Pydantic's Config class to set model-wide configuration options
+- Leverage Pydantic's ORM mode for seamless database integration
+
+---
+name: crud-best-practices.mdc
+description: Best practices for implementing CRUD operations
+globs: **/*.py
+---
+
+- Separate CRUD operations into distinct functions for better readability
+- Use Pydantic models as function parameters and return types
+- Implement proper error handling for database operations
+- Use FastAPI's dependency injection for database sessions
+
+---
+name: documentation-best-practices.mdc
+description: Guidelines for documenting FastAPI functions
+globs: **/*.py
+---
+
+- Use descriptive docstrings for all functions, including parameters and return types
+- Include example usage in function docstrings where applicable
+- Use FastAPI's built-in support for OpenAPI documentation
+- Document any custom exceptions that may be raised by the function

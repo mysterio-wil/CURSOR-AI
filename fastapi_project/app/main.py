@@ -3,13 +3,32 @@ from math import pi
 from typing import List
 from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 
-from settings import settings
-from schemas import Dish
+from app.settings import settings
+from app.schemas import Dish
 
 # Global constants for business logic
 LOWER_LIMIT = 10
 UPPER_LIMIT = 20
+
+# FastAPI application configuration
+# Uses settings defined in settings.py
+app = FastAPI(
+    title=settings.APP_NAME,
+    description="A simple FastAPI project",
+    version=settings.APP_VERSION,
+    debug=settings.DEBUG,
+)
+
+# Enable CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # In-memory database for demonstration
 # Contains a predefined list of menu items
@@ -20,15 +39,6 @@ dishes_db: List[Dish] = [
     Dish(id=4, name="Tomato Soup", price=7.50),
     Dish(id=5, name="Mushroom Risotto", price=16.99)
 ]
-
-# FastAPI application configuration
-# Uses settings defined in settings.py
-app = FastAPI(
-    title=settings.APP_NAME,
-    description="A simple FastAPI project",
-    version=settings.APP_VERSION,
-    debug=settings.DEBUG,
-)
 
 @app.get("/")
 async def root():
@@ -123,7 +133,7 @@ async def create_dish(dish: Dish):
     dishes_db.append(dish)
     return dish
 
-@app.get("/dishes/", response_model=List[Dish])
+@app.get("/dishes", response_model=List[Dish])
 async def read_dishes():
     """
     Returns the complete list of menu items.
@@ -150,10 +160,7 @@ async def read_dish(dish_id: int):
     for dish in dishes_db:
         if dish.id == dish_id:
             return dish
-    raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
-        detail=f"Dish with ID {dish_id} not found"
-    )
+    raise HTTPException(status_code=404, detail="Dish not found")
 
 @app.put("/dishes/{dish_id}", response_model=Dish)
 async def update_dish(dish_id: int, updated_dish: Dish):
